@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetStore.Models;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 
 namespace PetStore.Models
 {
@@ -16,15 +14,38 @@ namespace PetStore.Models
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderedItem> OrderedItems { get; set; }
+        public DbSet<Address> Addresses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Fix the User ↔ Address relationship
+            modelBuilder.Entity<Address>()
+                .HasOne(a => a.User)
+                .WithMany(u => u.Addresses)
+                .HasForeignKey(a => a.UserID)
+                .OnDelete(DeleteBehavior.SetNull);   // if user deleted, address stays (or use Cascade)
+
+            // Fix DefaultAddress relationship
             modelBuilder.Entity<User>()
-                .HasIndex(u => u.Username).IsUnique();
+                .HasOne(u => u.DefaultAddress)
+                .WithMany()
+                .HasForeignKey(u => u.DefaultAddressID)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // Unique indexes
             modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email).IsUnique();
+                .HasIndex(u => u.Username)
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
             modelBuilder.Entity<Category>()
-                .HasIndex(c => c.CategoryName).IsUnique();
+                .HasIndex(c => c.CategoryName)
+                .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

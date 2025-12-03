@@ -1,5 +1,4 @@
-﻿using PetStore.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetStore.Models
@@ -13,12 +12,22 @@ namespace PetStore.Models
 
         public DateTime OrderDate { get; set; } = DateTime.Now;
 
-        [Required, Column(TypeName = "decimal(10,2)")] public decimal TotalAmount { get; set; }
+        [Required, Column(TypeName = "decimal(10,2)")]
+        public decimal TotalAmount { get; set; }
 
         [Required] public string Status { get; set; } = "Pending";
 
-        [Required] public string ShippingAddress { get; set; }
+        // Clean & Simple Shipping Fields (exact match with Address table)
+        [Required] public string ShippingStreetAddress { get; set; }
+        [Required] public string ShippingCity { get; set; }
+        [Required] public string ShippingProvince { get; set; }
+        [Required] public string ShippingPostalCode { get; set; }
+        public string ShippingLandmark { get; set; }
 
-        public ICollection<OrderedItem> OrderedItems { get; set; }
+        // Optional: link to saved address
+        public int? ShippingAddressID { get; set; }
+        public Address? ShippingAddress { get; set; }
+
+        public ICollection<OrderedItem> OrderedItems { get; set; } = new List<OrderedItem>();
     }
 }

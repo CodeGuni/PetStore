@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Migrations/20251203183910_FixAddressRelationship.cs
+/Migrations/20251203183910_FixAddressRelationship.Designer.cs
+/Migrations/20251203184616_RemoveOldAddressColumns.cs
+/Migrations/20251203184616_RemoveOldAddressColumns.Designer.cs

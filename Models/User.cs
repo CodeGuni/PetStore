@@ -11,13 +11,20 @@ namespace PetStore.Models
 
         [Required, EmailAddress] public string Email { get; set; }
         public string FullName { get; set; }
-        public string Address { get; set; }
         public string PhoneNumber { get; set; }
 
-        [Required] public string Role { get; set; } = "Customer"; // Admin or Customer
+        [Required] public string Role { get; set; } = "Customer";
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        // Multiple proper addresses
+        public ICollection<Address> Addresses { get; set; } = new List<Address>();
+
+        // Optional default address
+        public int? DefaultAddressID { get; set; }
+        public Address? DefaultAddress { get; set; }
+
+        // Navigation
         public ICollection<ShoppingCart> ShoppingCarts { get; set; }
         public ICollection<Order> Orders { get; set; }
     }
