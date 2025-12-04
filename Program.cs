@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
 using PetStore.Models;          
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,5 +30,16 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Seed database
+try
+{
+    DbSeeder.SeedDatabase(app);
+    System.Diagnostics.Debug.WriteLine("Database seeding completed");
+}
+catch (Exception ex)
+{
+    System.Diagnostics.Debug.WriteLine($"Error during database seeding: {ex.Message}");
+}
 
 app.Run();

@@ -1,0 +1,278 @@
+@*
+ * Author: Gunpreet Singh
+ * Id: 9022194
+ *@
+@model IEnumerable<PetStore.Models.Product>
+@{
+    ViewData["Title"] = "Our Pets";
+    var categories = ViewBag.Categories as List<PetStore.Models.Category>;
+    var selectedCategoryId = ViewBag.SelectedCategoryId as int?;
+    var searchTerm = ViewBag.SearchTerm as string ?? "";
+    var sortBy = ViewBag.SortBy as string ?? "name";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/products.css" asp-append-version="true" />
+}
+
+<div class="products-page">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Find Your Perfect Companion</h1>
+            <p class="hero-subtitle">Discover beautiful, healthy pets from trusted breeders</p>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="container-fluid px-4 py-4">
+        <div class="row">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 mb-4">
+                <div class="filter-sidebar">
+                    <h3 class="filter-title">Filters</h3>
+                    
+                    <!-- Search -->
+                    <div class="filter-section">
+                        <label class="filter-label">Search</label>
+                        <form method="get" action="@Url.Action("Index")" class="search-form">
+                            <div class="input-group">
+                                <input type="text" name="searchTerm" class="form-control search-input" 
+                                       placeholder="Search pets..." value="@searchTerm">
+                                <button type="submit" class="btn btn-search">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                            @if (selectedCategoryId.HasValue)
+                            {
+                                <input type="hidden" name="categoryId" value="@selectedCategoryId.Value" />
+                            }
+                            @if (!string.IsNullOrEmpty(sortBy))
+                            {
+                                <input type="hidden" name="sortBy" value="@sortBy" />
+                            }
+                        </form>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="filter-section">
+                        <label class="filter-label">Category</label>
+                        <div class="category-list">
+                            <a href="@Url.Action("Index", new { searchTerm = searchTerm, sortBy = sortBy })" 
+                               class="category-item @(!selectedCategoryId.HasValue ? "active" : "")">
+                                All Categories
+                            </a>
+                            @if (categories != null)
+                            {
+                                @foreach (var category in categories)
+                                {
+                                    <a href="@Url.Action("Index", new { categoryId = category.CategoryID, searchTerm = searchTerm, sortBy = sortBy })" 
+                                       class="category-item @(selectedCategoryId == category.CategoryID ? "active" : "")">
+                                        @category.CategoryName
+                                    </a>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Sort -->
+                    <div class="filter-section">
+                        <label class="filter-label">Sort By</label>
+                        <form method="get" action="@Url.Action("Index")" class="sort-form">
+                            <select name="sortBy" class="form-select sort-select" onchange="this.form.submit()">
+                                @if (sortBy == "name")
+                                {
+                                    <option value="name" selected>Name (A-Z)</option>
+                                }
+                                else
+                                {
+                                    <option value="name">Name (A-Z)</option>
+                                }
+                                @if (sortBy == "price_low")
+                                {
+                                    <option value="price_low" selected>Price: Low to High</option>
+                                }
+                                else
+                                {
+                                    <option value="price_low">Price: Low to High</option>
+                                }
+                                @if (sortBy == "price_high")
+                                {
+                                    <option value="price_high" selected>Price: High to Low</option>
+                                }
+                                else
+                                {
+                                    <option value="price_high">Price: High to Low</option>
+                                }
+                                @if (sortBy == "age")
+                                {
+                                    <option value="age" selected>Age: Youngest First</option>
+                                }
+                                else
+                                {
+                                    <option value="age">Age: Youngest First</option>
+                                }
+                            </select>
+                            @if (selectedCategoryId.HasValue)
+                            {
+                                <input type="hidden" name="categoryId" value="@selectedCategoryId.Value" />
+                            }
+                            @if (!string.IsNullOrEmpty(searchTerm))
+                            {
+                                <input type="hidden" name="searchTerm" value="@searchTerm" />
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="col-lg-9">
+                <div class="products-header">
+                    <h2 class="products-count">
+                        @(Model?.Count() ?? 0) @((Model?.Count() ?? 0) == 1 ? "Pet" : "Pets") Found
+                    </h2>
+                </div>
+
+                @{
+                    var modelCount = Model?.Count() ?? 0;
+                    var hasData = Model != null && Model.Any();
+                }
+
+                @if (hasData)
+                {
+                    <div class="products-grid">
+                        @foreach (var product in Model)
+                        {
+                            var imageUrl = product?.ImageUrl ?? "";
+                            var productName = product?.ProductName ?? "Pet";
+                            var hasImage = !string.IsNullOrEmpty(imageUrl);
+                            
+                            <div class="product-card">
+                                <div class="product-image-container">
+                                    @if (hasImage)
+                                    {
+                                        <img src="@imageUrl" alt="@productName" class="product-image" loading="lazy" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                    }
+                                    <div class="product-image-placeholder" style="@(hasImage ? "display: none;" : "")">
+                                        <i class="bi bi-image"></i>
+                                    </div>
+                                    @if (product.StockQuantity > 0)
+                                    {
+                                        <span class="stock-badge in-stock">In Stock</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="stock-badge out-of-stock">Out of Stock</span>
+                                    }
+                                </div>
+                                <div class="product-info">
+                                    @{
+                                        var categoryName = product?.Category?.CategoryName ?? "Uncategorized";
+                                        var prodName = product?.ProductName ?? "Unnamed Product";
+                                        var breed = product?.Breed ?? "";
+                                    }
+                                    <div class="product-category">@categoryName</div>
+                                    <h3 class="product-name">@prodName</h3>
+                                    <div class="product-breed">@breed</div>
+                                    
+                                    <div class="product-details">
+                                        <div class="detail-item">
+                                            <i class="bi bi-calendar3"></i>
+                                            <span>@product.AgeInMonths months</span>
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(product.Gender))
+                                        {
+                                            <div class="detail-item">
+                                                <i class="bi bi-gender-ambiguous"></i>
+                                                <span>@product.Gender</span>
+                                            </div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(product.Color))
+                                        {
+                                            <div class="detail-item">
+                                                <i class="bi bi-palette"></i>
+                                                <span>@product.Color</span>
+                                            </div>
+                                        }
+                                        <div class="detail-item">
+                                            <i class="bi bi-speedometer2"></i>
+                                            <span>@product.WeightInKg kg</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="product-health">
+                                        @if (!string.IsNullOrEmpty(product.HealthInfo))
+                                        {
+                                            try
+                                            {
+                                                string[] healthTags = product.HealthInfo.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                                                foreach (string tag in healthTags)
+                                                {
+                                                    if (!string.IsNullOrWhiteSpace(tag))
+                                                    {
+                                                        <span class="health-tag">@tag.Trim()</span>
+                                                    }
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                <span class="health-tag">@product.HealthInfo</span>
+                                            }
+                                        }
+                                    </div>
+
+                                    <div class="product-footer">
+                                        <div class="product-price">
+                                            <span class="price-currency">$</span>
+                                            <span class="price-amount">@product.Price.ToString("F2")</span>
+                                        </div>
+                                        @if (product.StockQuantity > 0)
+                                        {
+                                            <button class="btn btn-add-to-cart" data-product-id="@product.ProductID">
+                                                <i class="bi bi-cart-plus"></i> Add to Cart
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-add-to-cart disabled" disabled>
+                                                <i class="bi bi-x-circle"></i> Unavailable
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="no-products">
+                        <div class="no-products-icon">
+                            <i class="bi bi-search"></i>
+                        </div>
+                        <h3>No pets found</h3>
+                        <p>Try adjusting your search or filters</p>
+                        <a href="@Url.Action("Index")" class="btn btn-primary">Clear Filters</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Add to cart functionality 
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-product-id');
+                    // TODO: Implement add to cart functionality
+                    console.log('Add to cart:', productId);
+                });
+            });
+        });
+    </script>
+}
+
