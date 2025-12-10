@@ -26,94 +26,16 @@
     }
 }
 
-<style>
-    :root {
-        --primary-orange: #FF8C42;
-        --gradient-primary: linear-gradient(135deg, #FF8C42 0%, #FF6B6B 100%);
-        --gradient-soft: linear-gradient(135deg, #FFF5EB 0%, #FFE8D6 100%);
-        --radius-lg: 16px;
-        --shadow-card: 0 8px 16px rgba(0, 0, 0, 0.08);
-        --shadow-primary: 0 4px 12px rgba(255, 140, 66, 0.3);
-    }
+@section Styles {
+    <link rel="stylesheet" href="~/css/about.css" asp-append-version="true" />
+}
 
-    .hero-bg {
-        background: var(--gradient-soft);
-    }
-
-    .section-title {
-        color: #2D3748;
-        position: relative;
-        display: inline-block;
-    }
-    
-    .section-title::after {
-        content: '';
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: var(--primary-orange);
-        margin: 8px auto 0;
-        border-radius: 2px;
-    }
-
-    .feature-card {
-        background: white;
-        border-radius: var(--radius-lg);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: none;
-        height: 100%;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-card);
-    }
-
-    .rounded-1 {
-        height: 72px;
-        width: 72px;
-        margin: auto;
-    }
-
-    /* Avatar Styles - Identical to Profile Page */
-    .team-avatar-wrapper {
-        width: 100px;
-        height: 100px;
-        margin: 0 auto 1rem;
-    }
-
-    .team-avatar-circle {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        background: var(--gradient-primary);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        font-weight: 700;
-        box-shadow: var(--shadow-primary);
-        border: 4px solid white;
-    }
-
-    .stat-box {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        border-bottom: 4px solid var(--primary-orange);
-    }
-</style>
-
-<section class="py-5 hero-bg">
-    <div class="container text-center py-4">
-        <h1 class="fw-bold display-4 mb-3 text-dark">About PetStore</h1>
-        <p class="text-secondary fs-5 mx-auto" style="max-width: 600px;">
-            A trusted place where pets find loving homes and families find pure joy.
-        </p>
+<div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">About PetStore</h1>
+            <p class="hero-subtitle">A trusted place where pets find loving homes and families find pure joy.</p>
+        </div>
     </div>
-</section>
 
 <section class="py-5 bg-white">
     <div class="container py-4">
