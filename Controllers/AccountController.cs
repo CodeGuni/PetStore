@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetStore.Models;
 using PetStore.Models.ViewModels;
@@ -147,6 +147,15 @@ namespace PetStore.Controllers
             var user = _context.Users.Find(userId);
             if (user == null) return NotFound();
 
+            // --- NEW LOGIC: Fetch Orders ---
+            var orders = _context.Orders
+                .Include(o => o.OrderedItems)       // Load the items in the order
+                .ThenInclude(oi => oi.Product)      // Load the Product details for each item
+                .Where(o => o.UserID == userId)     // Only this user's orders
+                .OrderByDescending(o => o.OrderDate)// Newest first
+                .ToList();
+            // -------------------------------
+
             var vm = new ProfilePageViewModel
             {
                 UserProfile = new UserProfileViewModel
@@ -156,7 +165,8 @@ namespace PetStore.Controllers
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber
                 },
-                ChangePassword = new ChangePasswordViewModel()
+                ChangePassword = new ChangePasswordViewModel(),
+                Orders = orders
             };
 
             return View(vm);
