@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetStore.Models;
+using PetStore.Models.ViewModels;
 
 namespace PetStore.Controllers
 {
@@ -75,9 +76,30 @@ namespace PetStore.Controllers
             return View();
         }
 
+        // GET: /Home/Contact
+        [HttpGet]
         public IActionResult Contact()
         {
             return View();
+        }
+
+        // POST: /Home/Contact
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Contact(ContactViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Return the view with validation errors
+                return View(model);
+            }
+
+            // --- PROCESSING LOGIC ---
+            // For now, we simulate success.
+
+            TempData["SuccessMessage"] = "Thank you! Your message has been sent. We will reply shortly.";
+            
+            return RedirectToAction("Contact");
         }
 
     }

@@ -192,3 +192,26 @@
         transform: translateY(0);
     }
 }
+
+.receipt-card {
+            border: none;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        .receipt-header {
+            background: var(--gradient-soft);
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        .product-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+        }
+        .info-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
