@@ -155,7 +155,10 @@
                                                 <span class="badge rounded-pill @statusBadge px-3 py-2">@order.Status</span>
                                             </td>
                                             <td class="text-end pe-3">
-                                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3">View</button>
+                                                <a asp-controller="Orders" asp-action="Details" asp-route-id="@order.OrderID" 
+                                                    class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                                    View
+                                                </a>
                                             </td>
                                         </tr>
                                     }
