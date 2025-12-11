@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace PetStore.Models
 {
     // ================================
-    // CUSTOM VALIDATION: EXPIRY FUTURE
+    // CUSTOM VALIDATION: FUTURE EXPIRY
     // ================================
     public class FutureExpiryAttribute : ValidationAttribute
     {
@@ -27,8 +27,7 @@ namespace PetStore.Models
             int month = int.Parse(parts[0]);
             int year = int.Parse("20" + parts[1]); // Convert YY → 20YY
 
-            DateTime expiryDate =
-                new DateTime(year, month, DateTime.DaysInMonth(year, month));
+            DateTime expiryDate = new DateTime(year, month, DateTime.DaysInMonth(year, month));
 
             if (expiryDate < DateTime.Now.Date)
             {
@@ -47,6 +46,7 @@ namespace PetStore.Models
     {
         [Required(ErrorMessage = "Full Name is required.")]
         [StringLength(100, ErrorMessage = "Full Name cannot exceed 100 characters.")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Full Name can only contain letters and spaces.")]
         public string FullName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Email is required.")]
@@ -54,7 +54,8 @@ namespace PetStore.Models
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Phone number is required.")]
-        [RegularExpression(@"^\d{10}$", ErrorMessage = "Enter a valid 10-digit phone number.")]
+        [RegularExpression(@"^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$",
+            ErrorMessage = "Enter a valid Canadian phone number (e.g., 123-456-7890).")]
         public string Phone { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Address is required.")]
@@ -65,23 +66,26 @@ namespace PetStore.Models
         [StringLength(50, ErrorMessage = "City cannot exceed 50 characters.")]
         public string City { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "State is required.")]
-        [StringLength(50, ErrorMessage = "State cannot exceed 50 characters.")]
-        public string State { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Province is required.")]
+        public string Province { get; set; } = string.Empty;
 
-        // ZIP: 2 letters + 3 digits (AB123)
-        [Required(ErrorMessage = "ZIP code is required.")]
-        [RegularExpression(@"^[A-Za-z]{2}\d{3}$",
-            ErrorMessage = "Enter a valid ZIP code (e.g., AB123).")]
+        // ZIP: Canadian postal code (A1A 1A1)
+        [Required(ErrorMessage = "Postal Code is required.")]
+        [RegularExpression(@"^[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d$",
+            ErrorMessage = "Enter a valid Canadian postal code (e.g., K1A 0B1).")]
         public string Zip { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Card Holder Name is required.")]
+        [StringLength(100, ErrorMessage = "Card Holder Name cannot exceed 100 characters.")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Card Holder Name can only contain letters and spaces.")]
+        public string CardHolderName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Card Number is required.")]
         [CreditCard(ErrorMessage = "Enter a valid card number.")]
         public string CardNumber { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Expiry is required.")]
-        [RegularExpression(@"^(0[1-9]|1[0-2])\/[0-9]{2}$",
-            ErrorMessage = "Enter a valid expiry date (MM/YY).")]
+        [RegularExpression(@"^(0[1-9]|1[0-2])\/[0-9]{2}$", ErrorMessage = "Enter a valid expiry date (MM/YY).")]
         [FutureExpiry(ErrorMessage = "Card expiry cannot be in the past.")]
         public string Expiry { get; set; } = string.Empty;
 
