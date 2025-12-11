@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/// Author - Swedha - 8995269
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetStore.Models;
 using PetStore.Filters;
@@ -18,9 +20,8 @@ namespace PetStore.Controllers
             _context = context;
         }
 
-        // ============================================
         // LOGOUT (Redirects to Account/Login)
-        // ============================================
+       
 
         public IActionResult Logout()
         {
@@ -28,9 +29,9 @@ namespace PetStore.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        // ============================================
+        
         // DASHBOARD
-        // ============================================
+       
 
         [AdminAuthorize]
         public async Task<IActionResult> Dashboard()
@@ -52,9 +53,9 @@ namespace PetStore.Controllers
             return View(recentProducts);
         }
 
-        // ============================================
+       
         // PRODUCT MANAGEMENT
-        // ============================================
+       
 
         [AdminAuthorize]
         public async Task<IActionResult> Products(string searchTerm, int? categoryId)
@@ -181,9 +182,9 @@ namespace PetStore.Controllers
             return RedirectToAction("Products");
         }
 
-        // ============================================
+       
         // USER MANAGEMENT
-        // ============================================
+      
 
         [AdminAuthorize]
         public async Task<IActionResult> Users(string searchTerm, string roleFilter)
@@ -227,56 +228,42 @@ namespace PetStore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdminAuthorize]
-        public async Task<IActionResult> EditUser(int id, User user, string newPassword)
+        public async Task<IActionResult> EditUser(int id, string Username, string Email, string FullName, string PhoneNumber, string Role, string newPassword)
         {
-            if (id != user.UserID)
+            var existingUser = await _context.Users.FindAsync(id);
+            if (existingUser == null)
             {
-                return NotFound();
+                TempData["Error"] = "User not found!";
+                return RedirectToAction("Users");
             }
 
-            if (ModelState.IsValid)
+            // Update fields
+            existingUser.Username = Username;
+            existingUser.Email = Email;
+            existingUser.FullName = FullName;
+            existingUser.PhoneNumber = PhoneNumber;
+            existingUser.Role = Role;
+
+            // Update password if provided
+            if (!string.IsNullOrEmpty(newPassword))
             {
-                try
-                {
-                    var existingUser = await _context.Users.FindAsync(id);
-                    if (existingUser == null)
-                    {
-                        return NotFound();
-                    }
-
-                    existingUser.Username = user.Username;
-                    existingUser.Email = user.Email;
-                    existingUser.FullName = user.FullName;
-                    existingUser.PhoneNumber = user.PhoneNumber;
-                    existingUser.Role = user.Role;
-
-                    // Update password if provided (using same SHA256 as AccountController)
-                    if (!string.IsNullOrEmpty(newPassword))
-                    {
-                        using var sha = System.Security.Cryptography.SHA256.Create();
-                        var bytes = System.Text.Encoding.UTF8.GetBytes(newPassword);
-                        var hash = sha.ComputeHash(bytes);
-                        existingUser.PasswordHash = Convert.ToBase64String(hash);
-                    }
-
-                    await _context.SaveChangesAsync();
-                    TempData["Success"] = "User updated successfully!";
-                    return RedirectToAction("Users");
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(user.UserID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                using var sha = System.Security.Cryptography.SHA256.Create();
+                var bytes = System.Text.Encoding.UTF8.GetBytes(newPassword);
+                var hash = sha.ComputeHash(bytes);
+                existingUser.PasswordHash = Convert.ToBase64String(hash);
             }
 
-            return View(user);
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "User updated successfully!";
+                return RedirectToAction("Users");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Error: {ex.Message}";
+                return RedirectToAction("EditUser", new { id = id });
+            }
         }
 
         [HttpPost]
@@ -302,9 +289,9 @@ namespace PetStore.Controllers
             return RedirectToAction("Users");
         }
 
-        // ============================================
+       
         // CATEGORY MANAGEMENT
-        // ============================================
+        
 
         [AdminAuthorize]
         public async Task<IActionResult> Categories()
@@ -415,9 +402,8 @@ namespace PetStore.Controllers
             return RedirectToAction("Categories");
         }
 
-        // ============================================
         // HELPER METHODS
-        // ============================================
+       
 
         private bool ProductExists(int id)
         {

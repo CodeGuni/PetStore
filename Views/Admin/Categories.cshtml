@@ -1,3 +1,6 @@
+@* Author - Swedha - 8995269 *@
+
+
 @model IEnumerable<PetStore.Models.Category>
 
 @{
@@ -8,7 +11,7 @@
 <div class="row mb-4">
     <div class="col-12">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="admin-card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Product Categories</h5>
                 <a href="@Url.Action("CreateCategory")" class="btn btn-success">
                     ➕ Add New Category
@@ -25,7 +28,7 @@
         {
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card h-100">
-                    <div class="card-body">
+                    <div class="admin-card-body">
                         <h5 class="card-title">@category.CategoryName</h5>
                         <p class="card-text text-muted">@category.Description</p>
                     </div>
@@ -53,7 +56,7 @@
     {
         <div class="col-12">
             <div class="card">
-                <div class="card-body text-center py-5">
+                <div class="admin-card-body text-center py-5">
                     <p class="text-muted">No categories found.</p>
                     <a href="@Url.Action("CreateCategory")" class="btn btn-success">
                         ➕ Add Your First Category

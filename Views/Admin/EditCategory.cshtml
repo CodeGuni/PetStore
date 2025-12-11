@@ -1,3 +1,5 @@
+@* Author - Swedha - 8995269 *@
+
 @model PetStore.Models.Category
 
 @{
@@ -8,10 +10,10 @@
 <div class="row">
     <div class="col-lg-6 mx-auto">
         <div class="card">
-            <div class="card-header">
+            <div class="admin-card-header">
                 <h5 class="mb-0">Edit Category: @Model.CategoryName</h5>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 <form method="post" action="/Admin/EditCategory/@Model.CategoryID">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="CategoryID" value="@Model.CategoryID" />
@@ -32,7 +34,7 @@
                         <a href="/Admin/Categories" class="btn btn-secondary">
                             ← Back to Categories
                         </a>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-admin-primary">
                             ✓ Save Changes
                         </button>
                     </div>

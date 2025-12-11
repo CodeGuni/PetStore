@@ -1,3 +1,5 @@
+@* Author - Swedha - 8995269 *@
+
 @model IEnumerable<PetStore.Models.User>
 
 @{
@@ -11,7 +13,7 @@
             <div class="card-header">
                 <h5 class="mb-0">User Filters</h5>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 <form method="get" action="/Admin/Users" class="row g-3">
                     <div class="col-md-6">
                         @{
@@ -42,7 +44,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary w-100">🔍 Search</button>
+                        <button type="submit" class="btn btn-admin-primary w-100">🔍 Search</button>
                     </div>
                 </form>
             </div>
@@ -53,10 +55,10 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
+            <div class="admin-card-header">
                 <h5 class="mb-0">All Users (@Model.Count())</h5>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 @if (Model != null && Model.Any())
                 {
                     <div class="table-responsive">

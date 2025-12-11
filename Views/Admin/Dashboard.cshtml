@@ -1,3 +1,5 @@
+ @* Author - Swedha - 8995269 *@
+
 @model IEnumerable<PetStore.Models.Product>
 
 @{
@@ -9,7 +11,7 @@
 <div class="row mb-4">
     <div class="col-md-3">
         <div class="card text-center">
-            <div class="card-body">
+            <div class="admin-card-body">
                 <h2 class="mb-0" style="color: #667eea;">@ViewBag.TotalProducts</h2>
                 <p class="text-muted mb-0">Total Products</p>
             </div>
@@ -17,7 +19,7 @@
     </div>
     <div class="col-md-3">
         <div class="card text-center">
-            <div class="card-body">
+            <div class="admin-card-body">
                 <h2 class="mb-0" style="color: #28a745;">@ViewBag.TotalCategories</h2>
                 <p class="text-muted mb-0">Categories</p>
             </div>
@@ -25,7 +27,7 @@
     </div>
     <div class="col-md-3">
         <div class="card text-center">
-            <div class="card-body">
+            <div class="admin-card-body">
                 <h2 class="mb-0" style="color: #17a2b8;">@ViewBag.TotalUsers</h2>
                 <p class="text-muted mb-0">Total Users</p>
             </div>
@@ -33,7 +35,7 @@
     </div>
     <div class="col-md-3">
         <div class="card text-center">
-            <div class="card-body">
+            <div class="admin-card-body">
                 <h2 class="mb-0" style="color: #dc3545;">@ViewBag.LowStockProducts</h2>
                 <p class="text-muted mb-0">Low Stock Alert</p>
             </div>
@@ -45,10 +47,10 @@
 <div class="row mb-4">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
+            <div class="admin-card-header">
                 <h5 class="mb-0">Quick Actions</h5>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 <a href="@Url.Action("CreateProduct", "Admin")" class="btn btn-admin-primary me-2 mb-2">
                     ➕ Add New Product
                 </a>
@@ -70,11 +72,11 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="admin-card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Recently Added Products</h5>
                 <a href="@Url.Action("Products", "Admin")" class="btn btn-sm btn-outline-primary">View All</a>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 @if (Model != null && Model.Any())
                 {
                     <div class="table-responsive">

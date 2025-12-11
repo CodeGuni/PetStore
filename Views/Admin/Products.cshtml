@@ -1,3 +1,5 @@
+@* Author - Swedha - 8995269 *@
+
 @model IEnumerable<PetStore.Models.Product>
 
 @{
@@ -8,13 +10,13 @@
 <div class="row mb-4">
     <div class="col-12">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="admin-card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Product Filters</h5>
                 <a href="/Admin/CreateProduct" class="btn btn-admin-primary">
                     ➕ Add New Product
                 </a>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 <form method="get" action="/Admin/Products" class="row g-3">
                     <div class="col-md-5">
                         @{
@@ -46,7 +48,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary w-100">🔍 Search</button>
+                        <button type="submit" class="btn btn-admin-primary w-100">🔍 Search</button>
                     </div>
                 </form>
             </div>
@@ -57,10 +59,10 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
+            <div class="admin-card-header">
                 <h5 class="mb-0">All Products (@Model.Count())</h5>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 @if (Model != null && Model.Any())
                 {
                     <div class="table-responsive">
@@ -116,14 +118,14 @@
                                             <div class="btn-group" role="group">
                                                 <a href="/Admin/EditProduct/@product.ProductID" 
                                                    class="btn btn-sm btn-outline-primary">
-                                                    ✏️ Edit
+                                                     Edit
                                                 </a>
                                                 <form method="post" action="/Admin/DeleteProduct/@product.ProductID" 
                                                       style="display: inline;"
                                                       onsubmit="return confirm('Are you sure you want to delete @product.ProductName?');">
                                                     @Html.AntiForgeryToken()
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                        🗑️ Delete
+                                                         Delete
                                                     </button>
                                                 </form>
                                             </div>

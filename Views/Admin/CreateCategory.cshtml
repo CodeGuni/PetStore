@@ -1,3 +1,5 @@
+ @* Author - Swedha - 8995269 *@
+
 @model PetStore.Models.Category
 
 @{
@@ -8,10 +10,10 @@
 <div class="row">
     <div class="col-lg-6 mx-auto">
         <div class="card">
-            <div class="card-header">
+            <div class="admin-card-header">
                 <h5 class="mb-0">Category Information</h5>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 <form method="post" asp-controller="Admin" asp-action="CreateCategory">
                     @Html.AntiForgeryToken()
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>

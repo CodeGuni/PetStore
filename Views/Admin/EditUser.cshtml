@@ -1,3 +1,5 @@
+@* Author - Swedha - 8995269 *@
+
 @model PetStore.Models.User
 
 @{
@@ -8,10 +10,10 @@
 <div class="row">
     <div class="col-lg-8 mx-auto">
         <div class="card">
-            <div class="card-header">
+            <div class="admin-card-header">
                 <h5 class="mb-0">Edit User: @Model.Username</h5>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 <form method="post" action="/Admin/EditUser/@Model.UserID">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="UserID" value="@Model.UserID" />
@@ -73,7 +75,7 @@
                         <a href="/Admin/Users" class="btn btn-secondary">
                             ← Back to Users
                         </a>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-admin-primary">
                             ✓ Save Changes
                         </button>
                     </div>
