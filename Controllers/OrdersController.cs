@@ -116,5 +116,28 @@ namespace PetStore.Controllers
             ViewBag.OrderSuccess = true;
             return View(model);
         }
+
+        // GET: /Orders/Details/5
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (!userId.HasValue)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var order = await _context.Orders
+                .Include(o => o.OrderedItems) 
+                .ThenInclude(oi => oi.Product)  
+                .FirstOrDefaultAsync(o => o.OrderID == id && o.UserID == userId.Value);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
     }
 }
