@@ -1,0 +1,106 @@
+﻿/* =========================================================
+   CHECKOUT PAGE - MATCHING CART PAGE DESIGN
+   ========================================================= */
+
+.checkout-page {
+    background: #f8f9fc;
+    min-height: 100vh;
+}
+
+/* ===== HERO SECTION (same gradient + style as cart page) ===== */
+.checkout-hero-section {
+    padding: 60px 0;
+    background: linear-gradient(135deg, #6d4eff, #4c2aff);
+    color: white;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.checkout-hero-title {
+    font-weight: 700;
+    font-size: 2.4rem;
+}
+
+/* ===== MAIN WRAPPER ===== */
+.checkout-wrapper {
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* ===== CARD STYLE (matches cart-card) ===== */
+.checkout-card,
+.checkout-summary-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    padding: 25px;
+}
+
+    /* ===== SECTION HEADERS ===== */
+    .checkout-card h4,
+    .checkout-summary-card h4 {
+        font-weight: 600;
+        color: #3d3d3d;
+    }
+
+    /* ===== FORM LABELS ===== */
+    .checkout-card .form-label {
+        font-weight: 500;
+        color: #555;
+    }
+
+    /* ===== INPUTS ===== */
+    .checkout-card .form-control {
+        height: 42px;
+        border-radius: 10px;
+        border: 1px solid #ced4da;
+    }
+
+        .checkout-card .form-control:focus {
+            border-color: #6d4eff;
+            box-shadow: 0 0 0 0.15rem rgba(109, 78, 255, 0.25);
+        }
+
+/* ===== SUMMARY SECTION ===== */
+.summary-items strong {
+    font-size: 1rem;
+}
+
+.checkout-summary-card hr {
+    margin: 1rem 0;
+}
+
+/* ===== BUTTONS (same as cart buttons) ===== */
+.checkout-placeorder-btn {
+    background-color: #6d4eff;
+    border: none;
+    padding: 12px;
+    height: 48px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+    .checkout-placeorder-btn:hover {
+        background-color: #5939ff;
+    }
+
+/* ===== Responsive (matching cart mobile stack) ===== */
+@media (max-width: 992px) {
+    .checkout-summary-card {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .checkout-hero-title {
+        font-size: 1.8rem;
+    }
+
+    .checkout-card,
+    .checkout-summary-card {
+        padding: 18px;
+        border-radius: 12px;
+    }
+}

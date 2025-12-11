@@ -1,0 +1,125 @@
+﻿@model PetStore.ViewModels.CheckoutViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
+}
+
+<div class="cart-page">
+    <!-- Gradient hero section -->
+    <div class="cart-hero-section">
+        <div class="container d-flex justify-content-center">
+            <h1 class="cart-hero-title text-center">
+                <i class="bi bi-credit-card me-2"></i>
+                Checkout
+            </h1>
+        </div>
+    </div>
+
+    <div class="cart-wrapper container my-5">
+        <div class="cart-card p-4">
+
+            @if (ViewBag.SuccessMessage != null)
+            {
+                <div class="alert alert-success text-center">
+                    @ViewBag.SuccessMessage
+                </div>
+            }
+
+            <form asp-action="Checkout" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label">Full Name</label>
+                    <input asp-for="FullName" class="form-control" placeholder="Enter your full name" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Phone" class="form-label">Phone</label>
+                    <input asp-for="Phone" class="form-control" placeholder="Enter your phone number" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label">Address</label>
+                    <textarea asp-for="Address" class="form-control" placeholder="Enter your address"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PaymentMethod" class="form-label">Payment Method</label>
+                    <select asp-for="PaymentMethod" class="form-select" id="paymentMethodSelect">
+                        <option value="">Select payment method</option>
+                        <option value="CreditCard">Credit Card</option>
+                        <option value="DebitCard">Debit Card</option>
+                        <option value="CashOnDelivery">Cash on Delivery</option>
+                    </select>
+                    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                </div>
+
+                <!-- Card details section -->
+                <div id="cardDetails" style="display:none;">
+                    <div class="mb-3">
+                        <label asp-for="CardHolderName" class="form-label">Card Holder Name</label>
+                        <input asp-for="CardHolderName" class="form-control" placeholder="Enter card holder name" />
+                        <span asp-validation-for="CardHolderName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CardNumber" class="form-label">Card Number</label>
+                        <input asp-for="CardNumber" class="form-control" placeholder="Enter card number" />
+                        <span asp-validation-for="CardNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ExpiryDate" class="form-label">Expiry Date (MM/YY)</label>
+                        <input asp-for="ExpiryDate" class="form-control" placeholder="MM/YY" />
+                        <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CVV" class="form-label">CVV</label>
+                        <input asp-for="CVV" class="form-control" placeholder="Enter CVV" />
+                        <span asp-validation-for="CVV" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary cart-checkout-btn">
+                        Place Order
+                    </button>
+                    <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary ms-2">
+                        Back to Cart
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const paymentSelect = document.getElementById("paymentMethodSelect");
+        const cardDetails = document.getElementById("cardDetails");
+
+        paymentSelect.addEventListener("change", function () {
+            if (this.value === "CreditCard" || this.value === "DebitCard") {
+                cardDetails.style.display = "block";
+            } else {
+                cardDetails.style.display = "none";
+            }
+        });
+    </script>
+}
