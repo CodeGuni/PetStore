@@ -1,8 +1,290 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@*
+ * Author: Himanshu
+ *@
+@{
+    ViewData["Title"] = "Home - PetStore";
+    var featuredProducts = ViewBag.FeaturedProducts as List<PetStore.Models.Product> ?? new List<PetStore.Models.Product>();
+    var categories = ViewBag.Categories as List<PetStore.Models.Category> ?? new List<PetStore.Models.Category>();
+    var totalProducts = ViewBag.TotalProducts as int? ?? 0;
+    var totalCategories = ViewBag.TotalCategories as int? ?? 0;
+    var inStockProducts = ViewBag.InStockProducts as int? ?? 0;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Styles {
+    <link rel="stylesheet" href="~/css/homepage.css" asp-append-version="true" />
+}
+
+<div class="homepage">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome to PetStore</h1>
+            <p class="hero-subtitle">Find Your Perfect Companion Today</p>
+            <div class="hero-buttons mt-4">
+                <a asp-controller="Products" asp-action="Index" class="btn btn-light btn-lg px-4">
+                    <i class="bi bi-search me-2"></i>Browse Pets
+                </a>
+                <a asp-controller="Home" asp-action="About" class="btn btn-outline-light btn-lg px-4">
+                    <i class="bi bi-info-circle me-2"></i>Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="stat-box text-center">
+                        <h3 class="fw-bold" style="color: var(--primary-orange)">@totalProducts</h3>
+                        <p class="text-muted small mb-0 fw-bold text-uppercase">Total Pets</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-box text-center">
+                        <h3 class="fw-bold" style="color: var(--primary-orange)">@inStockProducts</h3>
+                        <p class="text-muted small mb-0 fw-bold text-uppercase">Available Now</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-box text-center">
+                        <h3 class="fw-bold" style="color: var(--primary-orange)">@totalCategories</h3>
+                        <p class="text-muted small mb-0 fw-bold text-uppercase">Categories</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5" style="background: #f8f9fa;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold section-title">Why Choose PetStore?</h2>
+                <p class="text-muted mt-2">We're committed to connecting families with healthy, happy pets</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card feature-card p-4 text-center">
+                        <div class="mb-3">
+                            <div class="rounded-1 d-flex justify-content-center align-items-center bg-success bg-opacity-10 p-3 rounded-circle d-inline-block">
+                                <i class="bi bi-heart-pulse fs-1 text-success"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold mb-3">Healthy Pets</h5>
+                        <p class="text-muted">
+                            All our pets are vaccinated, dewormed, and health-checked by certified veterinarians before adoption.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card p-4 text-center">
+                        <div class="mb-3">
+                            <div class="rounded-1 d-flex justify-content-center align-items-center bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block">
+                                <i class="bi bi-shield-check fs-1 text-primary"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold mb-3">Trusted Source</h5>
+                        <p class="text-muted">
+                            We ensure ethical breeding practices and provide complete health documentation for every pet.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card p-4 text-center">
+                        <div class="mb-3">
+                            <div class="rounded-1 d-flex justify-content-center align-items-center bg-warning bg-opacity-10 p-3 rounded-circle d-inline-block">
+                                <i class="bi bi-headset fs-1 text-warning"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold mb-3">24/7 Support</h5>
+                        <p class="text-muted">
+                            Our team is here to help you with any questions about pet care, adoption, and post-adoption support.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    @if (categories.Any())
+    {
+        <section class="py-5 bg-white">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold section-title">Shop by Category</h2>
+                    <p class="text-muted mt-2">Explore our wide range of pet categories</p>
+                </div>
+                <div class="row g-4">
+                    @foreach (var category in categories.Take(4))
+                    {
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card feature-card p-4 text-center h-100">
+                                <div class="mb-3">
+                                    <div class="rounded-1 d-flex justify-content-center align-items-center bg-info bg-opacity-10 p-3 rounded-circle d-inline-block">
+                                        <i class="bi bi-@(category.CategoryName.ToLower().Contains("dog") ? "emoji-heart-eyes" : category.CategoryName.ToLower().Contains("cat") ? "emoji-smile" : "flower1") fs-1 text-info"></i>
+                                    </div>
+                                </div>
+                                <h5 class="fw-bold mb-3">@category.CategoryName</h5>
+                                <p class="text-muted mb-3">@(category.Description ?? $"Browse our collection of {category.CategoryName}")</p>
+                                <a asp-controller="Products" asp-action="Index" asp-route-categoryId="@category.CategoryID" class="btn btn-outline-primary">
+                                    View @category.CategoryName <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (categories.Count > 4)
+                {
+                    <div class="text-center mt-4">
+                        <a asp-controller="Products" asp-action="Index" class="btn btn-primary btn-lg">
+                            View All Categories <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+
+    <!-- Featured Products Section -->
+    @if (featuredProducts.Any())
+    {
+        <section class="py-5" style="background: var(--gradient-background);">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold section-title">Featured Pets</h2>
+                    <p class="text-muted mt-2">Meet our newest arrivals</p>
+                </div>
+                <div class="products-grid">
+                    @foreach (var product in featuredProducts)
+                    {
+                        var imageUrl = product?.ImageUrl ?? "";
+                        var productName = product?.ProductName ?? "Pet";
+                        var hasImage = !string.IsNullOrEmpty(imageUrl);
+
+                        <div class="product-card">
+                            <div class="product-image-container">
+                                @if (hasImage)
+                                {
+                                    <img src="@imageUrl" alt="@productName" class="product-image" loading="lazy" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                }
+                                <div class="product-image-placeholder" style="@(hasImage ? "display: none;" : "")">
+                                    <i class="bi bi-image"></i>
+                                </div>
+                                @if (product.StockQuantity > 0)
+                                {
+                                    <span class="stock-badge in-stock">In Stock</span>
+                                }
+                                else
+                                {
+                                    <span class="stock-badge out-of-stock">Out of Stock</span>
+                                }
+                            </div>
+                            <div class="product-info">
+                                @{
+                                    var categoryName = product?.Category?.CategoryName ?? "Uncategorized";
+                                    var prodName = product?.ProductName ?? "Unnamed Product";
+                                    var breed = product?.Breed ?? "";
+                                }
+                                <div class="product-category">@categoryName</div>
+                                <h3 class="product-name">@prodName</h3>
+                                <div class="product-breed">@breed</div>
+
+                                <div class="product-details">
+                                    <div class="detail-item">
+                                        <i class="bi bi-calendar3"></i>
+                                        <span>@product.AgeInMonths months</span>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(product.Gender))
+                                    {
+                                        <div class="detail-item">
+                                            <i class="bi bi-gender-ambiguous"></i>
+                                            <span>@product.Gender</span>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(product.Color))
+                                    {
+                                        <div class="detail-item">
+                                            <i class="bi bi-palette"></i>
+                                            <span>@product.Color</span>
+                                        </div>
+                                    }
+                                    <div class="detail-item">
+                                        <i class="bi bi-speedometer2"></i>
+                                        <span>@product.WeightInKg kg</span>
+                                    </div>
+                                </div>
+
+                                <div class="product-health">
+                                    @if (!string.IsNullOrEmpty(product.HealthInfo))
+                                    {
+                                        try
+                                        {
+                                            string[] healthTags = product.HealthInfo.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                                            foreach (string tag in healthTags)
+                                            {
+                                                if (!string.IsNullOrWhiteSpace(tag))
+                                                {
+                                                    <span class="health-tag">@tag.Trim()</span>
+                                                }
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            <span class="health-tag">@product.HealthInfo</span>
+                                        }
+                                    }
+                                </div>
+
+                                <div class="product-footer">
+                                    <div class="product-price">
+                                        <span class="price-currency">$</span>
+                                        <span class="price-amount">@product.Price.ToString("F2")</span>
+                                    </div>
+                                    @if (product.StockQuantity > 0)
+                                    {
+                                        <form asp-controller="Cart" asp-action="Add" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="productId" value="@product.ProductID" />
+                                            <input type="hidden" name="quantity" value="1" />
+                                            <input type="hidden" name="returnUrl" value="@Url.Action("Index", "Home")" />
+                                            <button type="submit" class="btn btn-add-to-cart">
+                                                <i class="bi bi-cart-plus"></i> Add to Cart
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-add-to-cart disabled" disabled>
+                                            <i class="bi bi-x-circle"></i> Unavailable
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="text-center mt-4">
+                    <a asp-controller="Products" asp-action="Index" class="btn btn-primary btn-lg">
+                        View All Pets <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    }
+
+    <!-- Call to Action Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h2 class="hero-title" style="font-size: var(--font-size-4xl);">Ready to Find Your Perfect Pet?</h2>
+            <p class="hero-subtitle">Browse our complete collection of healthy, happy pets waiting for their forever home.</p>
+            <div class="hero-buttons mt-4">
+                <a asp-controller="Products" asp-action="Index" class="btn btn-light btn-lg px-4">
+                    Start Shopping <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
 </div>
